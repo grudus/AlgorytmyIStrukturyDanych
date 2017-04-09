@@ -2,19 +2,13 @@ import java.util.Arrays;
 
 public class Labolatorium5 {
     public static void main(String[] args) {
-        Stos<Integer> stos = new Stos<>();
+        InfixToPostfix converter = new InfixToPostfix();
 
-        stos.push(4);
-        stos.push(5);
-        stos.push(6);
+        String infixExpression = "(4 + (6 * 6)) / 10";
+        converter.convert(infixExpression);
 
-
-//        System.out.println(new InfixToPostfix().convert("12 + 44 - 2 * 5 / 2 + 5 * 2"));
-//        System.out.println(new InfixToPostfix().convert("55 + 45 / 12 - 2"));
-//        System.out.println(new InfixToPostfix().convert("( 1 + 2 ) * ( 13 + 42 )"));
-//        System.out.println(new InfixToPostfix().convert("( 1 + 2 ) * 3"));
-//        System.out.println(new InfixToPostfix().convert("( 1 + 2 * 3 )"));
-
-        System.out.println(new InfixToPostfix().convert("5 * (5 * (3 + 2)) - 3"));
+        System.out.println("INFIX: " + infixExpression);
+        System.out.println("POSTFIX: " + converter.prettyFormat());
+        System.out.println("WYNIK: " + new RpnCalculator(converter.prettyFormat()).calculate());
     }
 }

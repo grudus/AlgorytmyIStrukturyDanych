@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -19,26 +21,37 @@ public class InfixToPostfix {
     private String postfix;
     private Stos<Character> stosOperatorow;
 
+    public InfixToPostfix() {
+        this.postfix = "";
+        this.stosOperatorow = new Stos<>();
+    }
+
 
     public String convert(String expression) {
-        stosOperatorow = new Stos<>();
-        postfix = "";
+        StringBuilder builder = new StringBuilder();
         while (!expression.isEmpty()) {
             final char c = expression.charAt(0);
 
-            if (jestOperand(c) || jestSpacja(c))
-                postfix += c;
+            if (jestOperand(c) || jestSpacja(c)) {
+                builder.append(c);
+            }
             else if (jestOperator(c)) {
-                postfix += processOperatorSpacja(c);
+                builder.append(processOperator(c));
             } else
                 throw new IllegalArgumentException("Nie mozna przetworzyc " + c);
 
             expression = expression.substring(1);
         }
         while (!stosOperatorow.empty())
-            postfix += stosOperatorow.pop();
-        return postfix;
+            builder.append(" ").append(stosOperatorow.pop());
+        this.postfix = builder.toString();
+        return this.postfix;
     }
+
+    public String prettyFormat() {
+        return this.postfix.trim().replaceAll(" +", " ");
+    }
+
 
     private boolean jestSpacja(char c) {
         return Character.isSpaceChar(c);
@@ -48,17 +61,17 @@ public class InfixToPostfix {
         return operatorPrior.containsKey(c);
     }
 
-    private String processOperatorSpacja(char c) {
-        if (stosOperatorow.empty() || c == '(')
-            stosOperatorow.push(c);
+    private String processOperator(char operator) {
+        if (stosOperatorow.empty() || operator == '(')
+            stosOperatorow.push(operator);
         else {
             Character topOp = stosOperatorow.peek();
-            if (operatorPrior.get(c) > operatorPrior.get(topOp))
-                stosOperatorow.push(c);
+            if (operatorPrior.get(operator) > operatorPrior.get(topOp))
+                stosOperatorow.push(operator);
             else {
                 String operators = "";
-                while (!stosOperatorow.empty() && operatorPrior.get(c) <= operatorPrior.get(topOp)) {
-                    operators += stosOperatorow.pop();
+                while (!stosOperatorow.empty() && operatorPrior.get(operator) <= operatorPrior.get(topOp)) {
+                    operators +=  " " + stosOperatorow.pop();
                     if (!stosOperatorow.empty()) {
                         topOp = stosOperatorow.peek();
                     }
@@ -67,8 +80,8 @@ public class InfixToPostfix {
                         break;
                     }
                 }
-                if (c != ')')
-                    stosOperatorow.push(c);
+                if (operator != ')')
+                    stosOperatorow.push(operator);
                 return operators;
             }
         }
@@ -76,28 +89,6 @@ public class InfixToPostfix {
         return "";
     }
 
-    private String processOperator(char c) {
-        if (stosOperatorow.empty())
-            stosOperatorow.push(c);
-        else {
-            Character topOp = stosOperatorow.peek();
-            if (operatorPrior.get(c) > operatorPrior.get(topOp))
-                stosOperatorow.push(c);
-            else {
-                String operators = "";
-                while (!stosOperatorow.empty() && operatorPrior.get(c) <= operatorPrior.get(topOp)) {
-                    operators += stosOperatorow.pop();
-                    if (!stosOperatorow.empty()) {
-                        topOp = stosOperatorow.peek();
-                    }
-                }
-                stosOperatorow.push(c);
-                return operators;
-            }
-        }
-
-        return "";
-    }
 
     private boolean jestOperand(char c) {
         return Character.isDigit(c);
