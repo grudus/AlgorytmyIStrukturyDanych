@@ -5,41 +5,38 @@ import static java.util.AbstractMap.SimpleEntry;
 import static java.util.stream.Collectors.toMap;
 
 public class InfixToPostfix {
-    private final Stos<Integer> liczby;
-    private final Stos<Character> operatory;
 
     private static final Map<Character, Integer> operatorPrior = Stream.of(
             new SimpleEntry<>('+', 1),
             new SimpleEntry<>('-', 1),
             new SimpleEntry<>('*', 2),
-            new SimpleEntry<>('/', 2)
+            new SimpleEntry<>('/', 2),
+            new SimpleEntry<>('(', -1),
+            new SimpleEntry<>(')', -1)
     ).collect(toMap(SimpleEntry::getKey, SimpleEntry::getValue));
 
 
     private String postfix;
+    private Stos<Character> stosOperatorow;
 
-    public InfixToPostfix() {
-        this.liczby = new Stos<>();
-        this.operatory = new Stos<>();
-    }
 
     public String convert(String expression) {
-        Stos<Character> stack = new Stos<>();
-        String postfix = "";
+        stosOperatorow = new Stos<>();
+        postfix = "";
         while (!expression.isEmpty()) {
             final char c = expression.charAt(0);
 
             if (jestOperand(c) || jestSpacja(c))
                 postfix += c;
             else if (jestOperator(c)) {
-                postfix += processOperator(c, stack);
+                postfix += processOperatorSpacja(c);
             } else
                 throw new IllegalArgumentException("Nie mozna przetworzyc " + c);
 
             expression = expression.substring(1);
         }
-        while (!stack.empty())
-            postfix += stack.pop();
+        while (!stosOperatorow.empty())
+            postfix += stosOperatorow.pop();
         return postfix;
     }
 
@@ -51,22 +48,50 @@ public class InfixToPostfix {
         return operatorPrior.containsKey(c);
     }
 
-    private String processOperator(char c, Stos<Character> stos) {
-        if (stos.empty())
-            stos.push(c);
+    private String processOperatorSpacja(char c) {
+        if (stosOperatorow.empty() || c == '(')
+            stosOperatorow.push(c);
         else {
-            Character topOp = stos.peek();
+            Character topOp = stosOperatorow.peek();
             if (operatorPrior.get(c) > operatorPrior.get(topOp))
-                stos.push(c);
+                stosOperatorow.push(c);
             else {
                 String operators = "";
-                while (!stos.empty() && operatorPrior.get(c) <= operatorPrior.get(topOp)) {
-                    operators += stos.pop();
-                    if (!stos.empty()) {
-                        topOp = stos.peek();
+                while (!stosOperatorow.empty() && operatorPrior.get(c) <= operatorPrior.get(topOp)) {
+                    operators += stosOperatorow.pop();
+                    if (!stosOperatorow.empty()) {
+                        topOp = stosOperatorow.peek();
+                    }
+                    if (topOp == '(') {
+                        stosOperatorow.pop();
+                        break;
                     }
                 }
-                stos.push(c);
+                if (c != ')')
+                    stosOperatorow.push(c);
+                return operators;
+            }
+        }
+
+        return "";
+    }
+
+    private String processOperator(char c) {
+        if (stosOperatorow.empty())
+            stosOperatorow.push(c);
+        else {
+            Character topOp = stosOperatorow.peek();
+            if (operatorPrior.get(c) > operatorPrior.get(topOp))
+                stosOperatorow.push(c);
+            else {
+                String operators = "";
+                while (!stosOperatorow.empty() && operatorPrior.get(c) <= operatorPrior.get(topOp)) {
+                    operators += stosOperatorow.pop();
+                    if (!stosOperatorow.empty()) {
+                        topOp = stosOperatorow.peek();
+                    }
+                }
+                stosOperatorow.push(c);
                 return operators;
             }
         }
