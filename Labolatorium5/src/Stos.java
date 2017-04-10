@@ -13,7 +13,7 @@ public class Stos<T> implements Stack<T> {
 
     @Override
     public T push(T elem) {
-        lista.dodajPrzed(elem, e -> true);
+        lista.dodajNaPoczatek(elem);
         return elem;
     }
 
@@ -24,6 +24,6 @@ public class Stos<T> implements Stack<T> {
 
     @Override
     public T peek() {
-        return lista.get((e) -> true);
+        return lista.getPierwszy();
     }
 }
