@@ -4,11 +4,20 @@ public class Labolatorium5 {
     public static void main(String[] args) {
         InfixToPostfix converter = new InfixToPostfix();
 
-        String infixExpression = "(4 + (6 * 6)) / 10";
-        converter.convert(infixExpression);
+        String odpowiedz;
+        while (true) {
+            odpowiedz = Klawiatura.wczytajLinie("Podaj wyrazenie lub nacisnij 'q' aby wyjsc");
+            if (odpowiedz.equals("q"))
+                return;
 
-        System.out.println("INFIX: " + infixExpression);
-        System.out.println("POSTFIX: " + converter.prettyFormat());
-        System.out.println("WYNIK: " + new RpnCalculator(converter.prettyFormat()).calculate());
+            String infixExpression = odpowiedz;
+            converter.convert(infixExpression);
+            String postfix = converter.prettyFormat();
+
+            System.out.println("INFIX: " + infixExpression);
+            System.out.println("POSTFIX: " + postfix);
+            System.out.println("WYNIK: " + new RpnCalculator(postfix).calculate());
+
+        }
     }
 }

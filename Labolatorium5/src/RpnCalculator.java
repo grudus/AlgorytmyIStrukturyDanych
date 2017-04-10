@@ -29,7 +29,7 @@ public class RpnCalculator {
                 case "/":
                     double dzielnik = stosWynikow.pop();
                     if (dzielnik == 0)
-                        throw new IllegalArgumentException("Nie mozna dzielic przez 0!");
+                        throw new IllegalArgumentException("Nie dziel przez 0!");
                     stosWynikow.push(stosWynikow.pop() / dzielnik);
                     break;
                 default:
