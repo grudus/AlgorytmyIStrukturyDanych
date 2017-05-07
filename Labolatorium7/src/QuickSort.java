@@ -7,7 +7,7 @@ public class QuickSort implements Sortable {
 
     private void quicksort(int array[], int x, int y) {
 
-        int i, j, v, temp;
+        int i, j, v;
 
         i = x;
         j = y;
