@@ -1,32 +1,27 @@
 public class QuickSort implements Sortable {
+
     @Override
     public int[] sort(int[] array) {
-        quicksort(array, 0, array.length - 1);
+        quickSort(array, 0, array.length - 1);
         return array;
     }
 
-    private void quicksort(int array[], int x, int y) {
-
-        int i, j, v;
-
-        i = x;
-        j = y;
-        v = array[(x + y) / 2];
-        do {
-            while (array[i] < v)
-                i++;
-            while (v < array[j])
-                j--;
-            if (i <= j) {
-                swap(array, i, j);
-                i++;
-                j--;
-            }
+    private void quickSort(int[] array, int start, int end) {
+        if (start < end) {
+            int pivotIndex = partition(array, start, end);
+            quickSort(array, start, pivotIndex - 1);
+            quickSort(array, pivotIndex + 1, end);
         }
-        while (i <= j);
-        if (x < j)
-            quicksort(array, x, j);
-        if (i < y)
-            quicksort(array, i, y);
+    }
+
+    private int partition(int[] array, int start, int end) {
+        int pivot = array[end];
+        int partitionIndex = start;
+        for (int i = start; i < end; i++) {
+            if (array[i] <= pivot)
+                swap(array, i, partitionIndex++);
+        }
+        swap(array, partitionIndex, end);
+        return partitionIndex;
     }
 }
