@@ -2,17 +2,16 @@ public class SelectSort implements Sortable {
 
     @Override
     public int[] sort(int[] array) {
-        int temp;
         final int len = array.length;
-        int max;
+        int minIndex;
         for (int i = 0; i < len; i++) {
-            max = i;
+            minIndex = i;
             for (int j = i + 1; j < len; j++) {
-                if (array[j] < array[max])
-                    max = j;
+                if (array[j] < array[minIndex])
+                    minIndex = j;
             }
 
-           swap(array, max, i);
+           swap(array, minIndex, i);
         }
         return array;
     }

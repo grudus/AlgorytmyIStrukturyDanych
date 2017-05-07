@@ -7,9 +7,8 @@ public class HeapSort implements Sortable {
         int heapSize = array.length - 1;
 
         for (int i = heapSize; i >= 0; i--) {
-            swap(array, 0, heapSize);
-            heapSize--;
-            satisfyHeap(array, 0, heapSize);
+            swap(array, 0, heapSize--);
+            rearrangeHeap(array, 0, heapSize);
         }
 
         return array;
@@ -18,13 +17,13 @@ public class HeapSort implements Sortable {
     private void createHeap(int[] array) {
         int heapSize = array.length - 1;
         for (int i = array.length / 2; i >= 0; i--)
-            satisfyHeap(array, i, heapSize);
+            rearrangeHeap(array, i, heapSize);
     }
 
-    private void satisfyHeap(int[] array, int i, int heapSize) {
+    private void rearrangeHeap(int[] array, int i, int heapSize) {
         int leftNode = 2 * i;
         int rightNode = leftNode + 1;
-        int largest, temp;
+        int largest;
         if (leftNode <= heapSize && array[leftNode] > array[i])
             largest = leftNode;
         else
@@ -34,10 +33,8 @@ public class HeapSort implements Sortable {
             largest = rightNode;
 
         if (largest != i) {
-            temp = array[i];
-            array[i] = array[largest];
-            array[largest] = temp;
-            satisfyHeap(array, largest, heapSize);
+            swap(array, largest, i);
+            rearrangeHeap(array, largest, heapSize);
         }
     }
 
