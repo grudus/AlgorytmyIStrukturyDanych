@@ -2,11 +2,9 @@ import java.util.regex.Pattern;
 
 public class RpnCalculator {
     private final String postfix;
-    public static final Pattern VALID_FORMAT = Pattern.compile("^[\\d\\+\\/\\*\\.\\- ]*$");
+    public static final Pattern INFIX_PATTERN = Pattern.compile("(\\d+)|([+-/*])");
 
     public RpnCalculator(String expression) {
-        if (!VALID_FORMAT.matcher(expression).matches())
-            throw new IllegalArgumentException("Expression " + expression + " didn't matches pattern " + VALID_FORMAT);
         this.postfix = expression;
     }
 
