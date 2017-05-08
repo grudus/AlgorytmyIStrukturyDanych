@@ -23,11 +23,9 @@ public class HeapSort implements Sortable {
     private void rearrangeHeap(int[] array, int i, int heapSize) {
         int leftNode = 2 * i;
         int rightNode = leftNode + 1;
-        int largest;
+        int largest = i;
         if (leftNode <= heapSize && array[leftNode] > array[i])
             largest = leftNode;
-        else
-            largest = i;
 
         if (rightNode <= heapSize && array[rightNode] > array[largest])
             largest = rightNode;
