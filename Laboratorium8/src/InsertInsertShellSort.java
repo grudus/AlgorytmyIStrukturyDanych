@@ -6,7 +6,9 @@ public class InsertInsertShellSort extends ShellSort {
 
     @Override
     public int[] sort() {
-
+        for (int interval : intervals) {
+            insertSort(interval);
+        }
         return array;
     }
 }

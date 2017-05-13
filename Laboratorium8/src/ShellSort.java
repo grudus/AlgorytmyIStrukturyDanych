@@ -15,8 +15,50 @@ public abstract class ShellSort {
 
     public abstract int[] sort();
 
+    protected void insertSort(int interval) {
+        final int len = array.length;
+        for (int i = 0; i < len; i += interval) {
+            final int copyNumber = array[i];
+            int j = i;
+            while (j > 0 && copyNumber < array[j - 1]) {
+                array[j] = array[j - 1];
+                j--;
+            }
+            array[j] = copyNumber;
+        }
+    }
+
+    protected void bubbleSort(int interval) {
+        final int len = array.length;
+        boolean zmiana;
+        do {
+            zmiana = false;
+            for (int i = 0; i < interval; i++) {
+                for (int j = i + interval; j < len; j += interval) {
+                    final int previousIndex = j - interval;
+                    if (array[previousIndex] > array[j]) {
+                        swap(array, previousIndex, j);
+                        zmiana = true;
+                    }
+                }
+            }
+        } while (zmiana);
+
+    }
+
+    private void swap(int[] array, int i, int j) {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }
+
     public enum IntervalType {
-        _3HPLUS1 {
+        _3HPLUS1("3h + 1") {
             @Override
             int[] generateIntervals(int length) {
                 List<Integer> intervals = new ArrayList<>();
@@ -27,7 +69,7 @@ public abstract class ShellSort {
                 return toArray(intervals);
             }
         },
-        _2KMINUS1 {
+        _2KMINUS1("k^2 - 1") {
             @Override
             int[] generateIntervals(int length) {
                 List<Integer> intervals = new ArrayList<>();
@@ -42,7 +84,7 @@ public abstract class ShellSort {
                 return toArray(intervals);
             }
         },
-        _2KPLUS1 {
+        _2KPLUS1("k^2 + 1") {
             @Override
             int[] generateIntervals(int length) {
                 List<Integer> intervals = new ArrayList<>();
@@ -58,7 +100,7 @@ public abstract class ShellSort {
                 return toArray(intervals);
             }
         },
-        FIBONACCI {
+        FIBONACCI("Fibonacci algorithm") {
             @Override
             int[] generateIntervals(int length) {
                 List<Integer> intervals = new ArrayList<>();
@@ -76,6 +118,12 @@ public abstract class ShellSort {
                 return toArray(intervals);
             }
         };
+
+        public final String label;
+
+        IntervalType(String label) {
+            this.label = label;
+        }
 
         abstract int[] generateIntervals(int length);
 
