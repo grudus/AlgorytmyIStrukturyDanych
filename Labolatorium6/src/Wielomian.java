@@ -1,4 +1,3 @@
-//Of course this should be more generic, but I haven't got enough time xD
 public class Wielomian {
     private static final Element<Jednomian> WARTOWNIK = new Element<>(new Jednomian(0, -1, -1, -1));
     private Element<Jednomian> pierwszy;
