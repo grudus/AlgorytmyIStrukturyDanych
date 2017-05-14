@@ -17,14 +17,17 @@ public abstract class ShellSort {
 
     protected void insertSort(int interval) {
         final int len = array.length;
-        for (int i = 0; i < len; i += interval) {
-            final int copyNumber = array[i];
-            int j = i;
-            while (j > 0 && copyNumber < array[j - 1]) {
-                array[j] = array[j - 1];
-                j--;
+
+        for (int start = 0; start < interval; start++) {
+            for (int i = start + interval; i < len; i += interval) {
+                final int copyNumber = array[i];
+                int j = i;
+                while (j >= interval && copyNumber < array[j - interval]) {
+                    array[j] = array[j - interval];
+                    j -= interval;
+                }
+                array[j] = copyNumber;
             }
-            array[j] = copyNumber;
         }
     }
 
