@@ -33,19 +33,19 @@ public abstract class ShellSort {
 
     protected void bubbleSort(int interval) {
         final int len = array.length;
-        boolean zmiana;
+        boolean alreadySorted;
         do {
-            zmiana = false;
+            alreadySorted = true;
             for (int i = 0; i < interval; i++) {
                 for (int j = i + interval; j < len; j += interval) {
                     final int previousIndex = j - interval;
                     if (array[previousIndex] > array[j]) {
                         swap(array, previousIndex, j);
-                        zmiana = true;
+                        alreadySorted = false;
                     }
                 }
             }
-        } while (zmiana);
+        } while (!alreadySorted);
 
     }
 
