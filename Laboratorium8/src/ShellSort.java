@@ -34,9 +34,9 @@ public abstract class ShellSort {
     protected void bubbleSort(int interval) {
         final int len = array.length;
         boolean alreadySorted;
-        do {
-            alreadySorted = true;
-            for (int i = 0; i < interval; i++) {
+        for (int i = 0; i < interval; i++) {
+            do {
+                alreadySorted = true;
                 for (int j = i + interval; j < len; j += interval) {
                     final int previousIndex = j - interval;
                     if (array[previousIndex] > array[j]) {
@@ -44,8 +44,9 @@ public abstract class ShellSort {
                         alreadySorted = false;
                     }
                 }
-            }
-        } while (!alreadySorted);
+            } while (!alreadySorted);
+
+        }
 
     }
 

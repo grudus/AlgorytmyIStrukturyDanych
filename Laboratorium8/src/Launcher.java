@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Launcher {
     public static void main(String[] args) {
-        int[][] arrays = {generateArray(5000), generateArray(10000), generateArray(50000), generateArray(100000)};
+        int[][] arrays = {generateArray(5000), generateArray(5000), generateArray(10000), generateArray(50000), generateArray(100000)};
 
         for (int[] array : arrays) {
             for (ShellSort.IntervalType type : ShellSort.IntervalType.values()) {
@@ -24,7 +24,7 @@ public class Launcher {
         Random random = new Random();
         int[] arr = new int[n];
         for (int i = 0; i < n; i++)
-            arr[i] = random.nextInt();
+            arr[i] = random.nextInt(100);
 
         return arr;
     }
