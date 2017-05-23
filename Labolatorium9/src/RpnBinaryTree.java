@@ -20,7 +20,7 @@ public class RpnBinaryTree extends BinaryTree<String> {
         }
 
         double right = Double.parseDouble(node.right.elem);
-        double result = calculate(node.elem.charAt(0), right, left);
+        double result = calculate(node.elem.charAt(0), left, right);
         node.elem = String.valueOf(result);
         return result;
     }
@@ -34,8 +34,7 @@ public class RpnBinaryTree extends BinaryTree<String> {
             case '*':
                 return val1 * val2;
             case '/':
-                double dzielnik = val2;
-                if (dzielnik == 0) {
+                if (val2 == 0) {
                     System.err.println("Dizelenie przez 0!");
                     System.exit(-1);
                 }
