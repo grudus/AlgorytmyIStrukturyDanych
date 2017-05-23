@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class BinaryTree<T> {
     protected Node<T> root;
 
@@ -13,8 +16,30 @@ public class BinaryTree<T> {
         printInOrder(root);
     }
 
+    private void printInOrder(Node<T> root) {
+        if (root.left != null) {
+            System.out.print("(");
+            printInOrder(root.left);
+        }
+        System.out.print(root.elem);
+        if (root.right != null) {
+            printInOrder(root.right);
+            System.out.print(")");
+        }
+
+    }
+
     public void printPostOrder() {
         printPostOrder(root);
+    }
+
+    private void printPostOrder(Node<T> node) {
+        if (node.left != null)
+            printPostOrder(node.left);
+        if (node.right != null)
+            printPostOrder(node.right);
+
+        System.out.printf("%s ", node.elem);
     }
 
     public int leafs() {
@@ -39,28 +64,6 @@ public class BinaryTree<T> {
         if (node.right != null) nodes += nodes(node.right);
         if (node.left != null) nodes += nodes(node.left);
         return nodes;
-    }
-
-    private void printPostOrder(Node<T> node) {
-        if (node.left != null)
-            printPostOrder(node.left);
-        if (node.right != null)
-            printPostOrder(node.right);
-
-        System.out.printf("%s ", node.elem);
-    }
-
-    private void printInOrder(Node<T> root) {
-        if (root.left != null) {
-            System.out.print("(");
-            printInOrder(root.left);
-        }
-        System.out.print(root.elem);
-        if (root.right != null) {
-            printInOrder(root.right);
-            System.out.print(")");
-        }
-
     }
 
     private void printBinaryTree(Node<T> node, int level) {
@@ -91,6 +94,17 @@ public class BinaryTree<T> {
         return Math.max(left, right) + 1;
     }
 
+    public void printHorizontally() {
+        Queue<Node<T>> queue = new LinkedList<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            Node<T> temp = queue.poll();
+            System.out.print(temp.elem + " ");
+            if (temp.left != null) queue.add(temp.left);
+            if (temp.right != null) queue.add(temp.right);
+        }
+    }
+
     public static class Node<T> {
         public T elem;
         public Node<T> left;
@@ -99,6 +113,7 @@ public class BinaryTree<T> {
         public Node(T elem) {
             this.elem = elem;
         }
+
 
         @Override
         public String toString() {
