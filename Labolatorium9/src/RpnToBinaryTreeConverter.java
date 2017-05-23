@@ -18,8 +18,8 @@ public class RpnToBinaryTreeConverter {
         for (String s : expression.asList()) {
             RpnBinaryTree.Node<String> node = new RpnBinaryTree.Node<>(s);
             if (isOperator(s)) {
-                node.left = stack.pop();
                 node.right = stack.pop();
+                node.left = stack.pop();
             }
             stack.push(node);
         }
