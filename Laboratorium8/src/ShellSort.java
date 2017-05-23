@@ -121,7 +121,20 @@ public abstract class ShellSort {
                 intervals.sort(reverseOrder());
                 return toArray(intervals);
             }
-        };
+        },
+        _075H("0.75h") {
+            @Override
+            int[] generateIntervals(int length) {
+                List<Integer> intervals = new ArrayList<>();
+
+                for (int i = length / 2; i > 0; i *= 0.75) {
+                    intervals.add(i);
+                }
+                intervals.sort(reverseOrder());
+                return toArray(intervals);
+            }
+        }
+        ;
 
         public final String label;
 
