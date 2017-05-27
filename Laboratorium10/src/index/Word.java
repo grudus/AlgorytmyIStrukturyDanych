@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@SuppressWarnings("unused")
 public class Word implements Comparable<Word> {
     private final String word;
     private List<Integer> lineNumbers;
 
-    public Word(String word, int lineNumber) {
+    Word(String word, int lineNumber) {
         this.word = word;
         this.lineNumbers = new ArrayList<>();
         lineNumbers.add(lineNumber);
@@ -27,7 +28,7 @@ public class Word implements Comparable<Word> {
         return lineNumbers.get(0);
     }
 
-    public String getWord() {
+    private String getWord() {
         return word;
     }
 

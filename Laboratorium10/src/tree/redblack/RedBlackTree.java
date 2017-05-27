@@ -7,14 +7,11 @@ import static tree.redblack.RedBlackNode.Color.RED;
 
 public class RedBlackTree<T extends Comparable<T>> extends BinaryTree<T, RedBlackNode<T>> {
 
+    @SuppressWarnings("unused")
     public RedBlackTree(RedBlackNode<T> root) {
         super(root, RedBlackNode::new);
         root.setColor(BLACK);
         onDuplicateKey = (elem, node) -> addLeftChild(elem, (RedBlackNode<T>) node);
-    }
-
-    public RedBlackTree(T value) {
-        this(new RedBlackNode<>(value));
     }
 
     public RedBlackTree() {
@@ -24,7 +21,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinaryTree<T, RedBlac
     @Override
     public void add(T elem) {
         if (root == null) {
-            root = new RedBlackNode<T>(elem);
+            root = new RedBlackNode<>(elem);
             root.setColor(BLACK);
         }
         else
@@ -61,15 +58,15 @@ public class RedBlackTree<T extends Comparable<T>> extends BinaryTree<T, RedBlac
             return;
         }
 
-        RedBlackNode<T> grandParent = parent.getParent();
-        RedBlackNode<T> uncle = grandParent.getLeft() == parent ? grandParent.getRight() : grandParent.getLeft();
+        RedBlackNode<T> grandParent = inserted.grandParent();
+        RedBlackNode<T> uncle = inserted.uncle();
 
         if (uncle != null && uncle.isRed())
             handleRedUncle(parent, uncle, grandParent);
         else if (blackUncleAndInnerChild(inserted, parent, grandParent))
             rotateInner(inserted, parent, grandParent);
         else if (blackUncleAndOuterChild(inserted, parent, grandParent))
-            rotateOuter(inserted, parent, grandParent, grandParent.getLeft() == parent);
+            rotateOuter(parent, grandParent, grandParent.getLeft() == parent);
 
 
     }
@@ -87,10 +84,10 @@ public class RedBlackTree<T extends Comparable<T>> extends BinaryTree<T, RedBlac
         }
         parent.setParent(inserted);
 
-        rotateOuter(parent, inserted, grandParent, isLeftChild);
+        rotateOuter(inserted, grandParent, isLeftChild);
     }
 
-    private void rotateOuter(RedBlackNode<T> inserted, RedBlackNode<T> parent, RedBlackNode<T> grandParent, boolean isLeftChild) {
+    private void rotateOuter(RedBlackNode<T> parent, RedBlackNode<T> grandParent, boolean isLeftChild) {
         RedBlackNode<T> grandGrandParent = grandParent.getParent();
         if (isLeftChild) {
             RedBlackNode<T> rightSon = parent.getRight();

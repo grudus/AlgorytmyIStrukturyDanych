@@ -9,7 +9,7 @@ public class Line {
     private final int number;
     private final List<Word> words;
 
-    public Line(String rawLine, int number) {
+    Line(String rawLine, int number) {
         this.rawLine = rawLine;
         this.number = number;
         words = generateWords();

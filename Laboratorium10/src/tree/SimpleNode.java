@@ -5,7 +5,7 @@ public class SimpleNode<T extends Comparable<T>> implements Node<T> {
     private Node<T> left;
     private Node<T> right;
 
-    public SimpleNode(T elem) {
+    SimpleNode(T elem) {
         this.value = elem;
     }
 

@@ -12,11 +12,11 @@ public class RedBlackNode<T extends Comparable<T>> implements Node<T> {
     private RedBlackNode<T> right;
     private Color color;
 
-    public RedBlackNode(T elem) {
+    RedBlackNode(T elem) {
        this(elem, null);
     }
 
-    public RedBlackNode(T elem, RedBlackNode<T> parent) {
+    RedBlackNode(T elem, RedBlackNode<T> parent) {
         this.parent = parent;
         this.value = elem;
         this.color = RED;
@@ -52,43 +52,38 @@ public class RedBlackNode<T extends Comparable<T>> implements Node<T> {
         return right;
     }
 
-    public RedBlackNode<T> grandParent() {
+    RedBlackNode<T> grandParent() {
         return parent != null ? parent.getParent() : null;
     }
 
-    public RedBlackNode<T> uncle() {
-        if (parent == null)
+    RedBlackNode<T> uncle() {
+        if (grandParent() == null)
             return null;
-        return this == parent.getRight() ? parent.getLeft() : parent.getRight();
+        return parent == grandParent().getRight() ? grandParent().getLeft() : grandParent().getRight();
     }
 
-
-    public Color getColor() {
-        return color;
-    }
-
-    public void switchColor() {
+    void switchColor() {
         if (isBlack()) color = RED;
         else color = BLACK;
     }
 
-    public void setColor(Color color) {
+    void setColor(Color color) {
         this.color = color;
     }
 
-    public boolean isBlack() {
+    boolean isBlack() {
         return color == BLACK;
     }
 
-    public boolean isRed() {
+    boolean isRed() {
         return color == RED;
     }
 
-    public RedBlackNode<T> getParent() {
+    RedBlackNode<T> getParent() {
         return parent;
     }
 
-    public void setParent(RedBlackNode<T> parent) {
+    void setParent(RedBlackNode<T> parent) {
         this.parent = parent;
     }
 

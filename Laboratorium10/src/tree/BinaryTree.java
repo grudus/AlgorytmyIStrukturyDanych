@@ -9,9 +9,10 @@ import java.util.function.Function;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
+@SuppressWarnings("unused")
 public abstract class BinaryTree<T extends Comparable<T>, E extends Node<T>> {
     protected E root;
-    protected final Function<T, ? extends Node<T>> elemToNode;
+    private final Function<T, ? extends Node<T>> elemToNode;
 
     protected BiConsumer<T, ? super Node<T>> onDuplicateKey;
 
@@ -21,7 +22,7 @@ public abstract class BinaryTree<T extends Comparable<T>, E extends Node<T>> {
         onDuplicateKey = this::addLeftChild;
     }
 
-
+    @SuppressWarnings("unchecked")
     public void add(T elem) {
         if (root == null)
             root = (E) elemToNode.apply(elem);
