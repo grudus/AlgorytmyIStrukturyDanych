@@ -3,6 +3,7 @@ package tree;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import static java.util.Optional.empty;
@@ -10,11 +11,14 @@ import static java.util.Optional.of;
 
 public abstract class BinaryTree<T extends Comparable<T>, E extends Node<T>> {
     protected E root;
-    private final Function<T, Node<T>> elemToNode;
+    protected final Function<T, Node<T>> elemToNode;
+
+    protected BiConsumer<T, ? super Node<T>> onDuplicateKey;
 
     public BinaryTree(E root, Function<T, Node<T>> elemToNode) {
         this.root = root;
         this.elemToNode = elemToNode;
+        onDuplicateKey = this::addLeftChild;
     }
 
 
@@ -23,27 +27,36 @@ public abstract class BinaryTree<T extends Comparable<T>, E extends Node<T>> {
     }
 
     private void add(T elem, Node<T> actual) {
-        if (actual.isLessThan(elem)) {
-            if (actual.getRight() == null)
-                actual.setRight(elemToNode.apply(elem));
-            else add(elem, actual.getRight());
-        } else {
-            if (actual.getLeft() == null)
-                actual.setLeft(elemToNode.apply(elem));
-            else add(elem, actual.getLeft());
-        }
+        if (actual.isLessThan(elem))
+            addRightChild(elem, actual);
+        else if (actual.isGreaterThan(elem))
+            addLeftChild(elem, actual);
+        else
+            onDuplicateKey.accept(elem, actual);
+    }
+
+    private void addLeftChild(T elem, Node<T> actual) {
+        if (actual.getLeft() == null)
+            actual.setLeft(elemToNode.apply(elem));
+        else add(elem, actual.getLeft());
+    }
+
+    private void addRightChild(T elem, Node<T> actual) {
+        if (actual.getRight() == null)
+            actual.setRight(elemToNode.apply(elem));
+        else add(elem, actual.getRight());
     }
 
     public Optional<Node<T>> find(T elem) {
         return find(elem, root);
     }
 
-    private Optional<Node<T>> find( T elem, Node<T> actual) {
+    private Optional<Node<T>> find(T elem, Node<T> actual) {
         if (actual.isLessThan(elem)) {
             if (actual.getLeft() == null)
                 return empty();
             else return find(elem, actual.getLeft());
-        } else if(actual.isGreaterThan(elem)) {
+        } else if (actual.isGreaterThan(elem)) {
             if (actual.getRight() == null)
                 return empty();
             else return find(elem, actual.getRight());
@@ -62,13 +75,11 @@ public abstract class BinaryTree<T extends Comparable<T>, E extends Node<T>> {
 
     private void printInOrder(Node<T> root) {
         if (root.getLeft() != null) {
-            System.out.print("(");
             printInOrder(root.getLeft());
         }
-        System.out.print(root);
+        System.out.println(root);
         if (root.getRight() != null) {
             printInOrder(root.getRight());
-            System.out.print(")");
         }
 
     }
@@ -83,7 +94,7 @@ public abstract class BinaryTree<T extends Comparable<T>, E extends Node<T>> {
         if (node.getRight() != null)
             printPostOrder(node.getRight());
 
-        System.out.printf("%s ", node);
+        System.out.printf("%s \n", node);
     }
 
     public int leafs() {
@@ -149,4 +160,7 @@ public abstract class BinaryTree<T extends Comparable<T>, E extends Node<T>> {
         }
     }
 
+    public void setOnDuplicateKeyAction(BiConsumer<T, Node<T>> onDuplicateKey) {
+        this.onDuplicateKey = onDuplicateKey;
+    }
 }

@@ -52,6 +52,16 @@ public class RedBlackNode<T extends Comparable<T>> implements Node<T> {
         return right;
     }
 
+    public RedBlackNode<T> grandParent() {
+        return parent != null ? parent.getParent() : null;
+    }
+
+    public RedBlackNode<T> uncle() {
+        if (parent == null)
+            return null;
+        return this == parent.getRight() ? parent.getLeft() : parent.getRight();
+    }
+
 
     public Color getColor() {
         return color;
@@ -83,7 +93,7 @@ public class RedBlackNode<T extends Comparable<T>> implements Node<T> {
     }
 
     public enum Color {
-        BLACK("#"), RED("(@)");
+        BLACK("(B)"), RED("<R>");
         public final String symbol;
 
         Color(String symbol) {

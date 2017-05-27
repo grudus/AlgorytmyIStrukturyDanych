@@ -1,26 +1,24 @@
-import tree.BinaryTree;
+import index.Word;
+import index.WordReader;
 import tree.redblack.RedBlackTree;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 
 public class Lab10 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        RedBlackTree<Word> tree = new RedBlackTree<>();
+        tree.setOnDuplicateKeyAction((elem, node) -> node.getValue().addIndex(elem.getFirstLineNumber()));
+        URL url = Lab10.class.getClassLoader().getResource("text");
+        File file = new File(url.getPath());
+        WordReader reader = new WordReader(file);
 
-        BinaryTree<Integer, ?> tree = new RedBlackTree<>(0);
-//
-        tree.add(1);
-        tree.add(2);
-        tree.add(3);
-        tree.add(4);
-        tree.add(5);
-        tree.add(6);
-        tree.add(7);
-        tree.add(8);
-        tree.add(9);
-        tree.add(10);
+        reader.readLines().forEach(line -> {
+            line.getWords().forEach(tree::add);
+        });
 
-//        tree.add(2);
-//        tree.add(1);
-
-        tree.printAsTree();
+        tree.printInOrder();
     }
 }

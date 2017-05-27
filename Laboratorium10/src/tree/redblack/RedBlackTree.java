@@ -10,31 +10,49 @@ public class RedBlackTree<T extends Comparable<T>> extends BinaryTree<T, RedBlac
     public RedBlackTree(RedBlackNode<T> root) {
         super(root, RedBlackNode::new);
         root.setColor(BLACK);
+        onDuplicateKey = (elem, node) -> addLeftChild(elem, (RedBlackNode<T>) node);
     }
 
     public RedBlackTree(T value) {
         this(new RedBlackNode<>(value));
     }
 
+    public RedBlackTree() {
+       super(null, RedBlackNode::new);
+    }
+
     @Override
     public void add(T elem) {
-        add(elem, root);
+        if (root == null) {
+            root = new RedBlackNode<T>(elem);
+            root.setColor(BLACK);
+        }
+        else
+            add(elem, root);
     }
 
     private void add(T elem, RedBlackNode<T> actual) {
-        if (actual.isLessThan(elem)) {
-            if (actual.getRight() == null) {
-                RedBlackNode<T> insereted = new RedBlackNode<>(elem, actual);
-                actual.setRight(insereted);
-                reorganizeTree(insereted, actual);
-            } else add(elem, actual.getRight());
-        } else {
-            if (actual.getLeft() == null) {
-                RedBlackNode<T> insereted = new RedBlackNode<>(elem, actual);
-                actual.setLeft(insereted);
-                reorganizeTree(insereted, actual);
-            } else add(elem, actual.getLeft());
-        }
+        if (actual.isLessThan(elem))
+            addRightChild(elem, actual);
+        else if (actual.isGreaterThan(elem))
+            addLeftChild(elem, actual);
+        else onDuplicateKey.accept(elem, actual);
+    }
+
+    private void addRightChild(T elem, RedBlackNode<T> actual) {
+        if (actual.getRight() == null) {
+            RedBlackNode<T> insereted = new RedBlackNode<>(elem, actual);
+            actual.setRight(insereted);
+            reorganizeTree(insereted, actual);
+        } else add(elem, actual.getRight());
+    }
+
+    private void addLeftChild(T elem, RedBlackNode<T> actual) {
+        if (actual.getLeft() == null) {
+            RedBlackNode<T> insereted = new RedBlackNode<>(elem, actual);
+            actual.setLeft(insereted);
+            reorganizeTree(insereted, actual);
+        } else add(elem, actual.getLeft());
     }
 
     private void reorganizeTree(RedBlackNode<T> inserted, RedBlackNode<T> parent) {
@@ -67,6 +85,7 @@ public class RedBlackTree<T extends Comparable<T>> extends BinaryTree<T, RedBlac
             inserted.setRight(parent);
             grandParent.setRight(inserted);
         }
+        parent.setParent(inserted);
 
         rotateOuter(parent, inserted, grandParent, isLeftChild);
     }
