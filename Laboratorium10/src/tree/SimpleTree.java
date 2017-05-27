@@ -8,4 +8,8 @@ public class SimpleTree<T extends Comparable<T>> extends BinaryTree<T, SimpleNod
     public SimpleTree(T value) {
         this(new SimpleNode<>(value));
     }
+
+    public SimpleTree() {
+        this((SimpleNode<T>)null);
+    }
 }

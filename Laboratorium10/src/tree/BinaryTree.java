@@ -11,7 +11,7 @@ import static java.util.Optional.of;
 
 public abstract class BinaryTree<T extends Comparable<T>, E extends Node<T>> {
     protected E root;
-    protected final Function<T, Node<T>> elemToNode;
+    protected final Function<T, ? extends Node<T>> elemToNode;
 
     protected BiConsumer<T, ? super Node<T>> onDuplicateKey;
 
@@ -23,7 +23,10 @@ public abstract class BinaryTree<T extends Comparable<T>, E extends Node<T>> {
 
 
     public void add(T elem) {
-        add(elem, root);
+        if (root == null)
+            root = (E) elemToNode.apply(elem);
+        else
+            add(elem, root);
     }
 
     private void add(T elem, Node<T> actual) {
@@ -53,15 +56,15 @@ public abstract class BinaryTree<T extends Comparable<T>, E extends Node<T>> {
 
     private Optional<Node<T>> find(T elem, Node<T> actual) {
         if (actual.isLessThan(elem)) {
-            if (actual.getLeft() == null)
-                return empty();
-            else return find(elem, actual.getLeft());
+            if (actual.getRight() != null)
+                return find(elem, actual.getRight());
         } else if (actual.isGreaterThan(elem)) {
-            if (actual.getRight() == null)
-                return empty();
-            else return find(elem, actual.getRight());
-        }
-        return of(actual);
+            if (actual.getLeft() != null)
+                return find(elem, actual.getLeft());
+        } else if (actual.isEqualTo(elem))
+            return of(actual);
+
+        return empty();
     }
 
 

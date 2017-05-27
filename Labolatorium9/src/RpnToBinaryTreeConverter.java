@@ -15,11 +15,17 @@ public class RpnToBinaryTreeConverter {
     public RpnBinaryTree convert() {
         Stack<BinaryTree.Node<String>> stack = new Stack<>();
 
-        for (String s : expression.asList()) {
+        List<String> asList = expression.asList();
+        for (int i = 0; i < asList.size(); i++) {
+            String s = asList.get(i);
             RpnBinaryTree.Node<String> node = new RpnBinaryTree.Node<>(s);
             if (isOperator(s)) {
                 node.right = stack.pop();
                 node.left = stack.pop();
+            }
+            if (i < asList.size() - 1 && asList.get(i+1).equals("-")) {
+                node.elem = "-" + node.elem;
+                i++;
             }
             stack.push(node);
         }
@@ -28,6 +34,6 @@ public class RpnToBinaryTreeConverter {
     }
 
     public static boolean isOperator(String s) {
-        return OPERATORS.contains(s.charAt(0));
+        return s.length() == 1 && OPERATORS.contains(s.charAt(0));
     }
 }

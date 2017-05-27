@@ -14,6 +14,11 @@ public class Word implements Comparable<Word> {
         lineNumbers.add(lineNumber);
     }
 
+    public Word(String word) {
+        this.word = word;
+        this.lineNumbers = new ArrayList<>();
+    }
+
     public void addIndex(int lineNumber) {
         lineNumbers.add(lineNumber);
     }
