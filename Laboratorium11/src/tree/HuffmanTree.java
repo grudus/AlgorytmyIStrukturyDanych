@@ -52,12 +52,24 @@ public class HuffmanTree extends BinaryTree<Letter> {
     }
 
     private void decode(Node<Letter> node, String word, List<String> decoded) {
-        if (node.getRight() == null && node.getLeft() == null)
+        if (word.isEmpty()) {
             decoded.add(node.getValue().getLetter() + "");
-        else if (word.charAt(0) == '1')
-            decode(node.getLeft(), word.substring(1), decoded);
-        else
-            decode(node.getRight(), word.substring(1), decoded);
-
+            return;
+        }
+        if (word.charAt(0) == '1') {
+            if (node.getLeft() != null) {
+                decode(node.getLeft(), word.substring(1), decoded);
+            } else {
+                decoded.add(node.getValue().getLetter() + "");
+                decode(getRoot(), word, decoded);
+            }
+        }
+        if (word.charAt(0) == '0')
+            if (node.getRight() != null)
+                decode(node.getRight(), word.substring(1), decoded);
+            else {
+                decoded.add(node.getValue().getLetter() + "");
+                decode(getRoot(), word, decoded);
+            }
     }
 }

@@ -32,7 +32,10 @@ public class Letter implements Comparable<Letter> {
 
     @Override
     public int compareTo(Letter o) {
-        return Long.compare(frequency, o.frequency);
+        long freqDiff = frequency - o.getFrequency();
+        if (freqDiff == 0)
+            return o.getLetter() - letter;
+        return (int) freqDiff;
     }
 
     @Override
