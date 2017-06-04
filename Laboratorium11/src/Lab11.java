@@ -10,12 +10,12 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toMap;
 import static sentence.Letter.EMPTY;
 
 public class Lab11 {
     private static final String TEXT = "ala i ola.";
+    private static final String SEPARATOR = " ";
 
     public static void main(String[] args) {
         HuffmanTree tree = createTree();
@@ -26,14 +26,12 @@ public class Lab11 {
 
         tree.findCode().forEach((letter, code) -> System.out.printf("%s|%d|%s\n", letter.getLetter(), letter.getFrequency(), code));
 
-        String encoded = TEXT.chars().mapToObj(i -> charsToCode.get((char) i)).reduce((s1, s2) -> s1 + " " + s2).get();
-        System.out.println(encoded);
+        String encoded = TEXT.chars().mapToObj(i -> charsToCode.get((char) i)).reduce((s1, s2) -> s1 + SEPARATOR + s2).get();
 
-        System.out.println(tree.decode(encoded.replaceAll(" ", "")));
+        System.out.println(encoded);
+        System.out.println(tree.decode(encoded.replaceAll(SEPARATOR, "")));
 
         writeToFile(encoded);
-
-
     }
 
     private static void writeToFile(String encoded) {
@@ -47,7 +45,7 @@ public class Lab11 {
 
     private static HuffmanTree createTree() {
         Queue<Letter> letters = new Sentence(TEXT).characterCountAsQueue();
-        Queue<HuffmanTree> trees = new PriorityQueue<>(comparing(tree -> tree.getRoot().getValue()));
+        Queue<HuffmanTree> trees = new PriorityQueue<>(HuffmanTree::compareTo);
 
         while (!letters.isEmpty()) {
             trees.add(new HuffmanTree(letters.poll()));

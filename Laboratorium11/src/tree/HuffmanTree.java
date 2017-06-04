@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 import static java.util.Comparator.comparingLong;
 
-public class HuffmanTree extends BinaryTree<Letter> {
+public class HuffmanTree extends BinaryTree<Letter> implements Comparable<BinaryTree<Letter>> {
 
 
     public HuffmanTree(Letter letter) {
@@ -71,5 +71,10 @@ public class HuffmanTree extends BinaryTree<Letter> {
                 decoded.add(node.getValue().getLetter() + "");
                 decode(getRoot(), word, decoded);
             }
+    }
+
+    @Override
+    public int compareTo(BinaryTree<Letter> o) {
+        return getRoot().getValue().compareTo(o.getRoot().getValue());
     }
 }
