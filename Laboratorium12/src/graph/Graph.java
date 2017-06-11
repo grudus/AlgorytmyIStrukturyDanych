@@ -145,7 +145,7 @@ public class Graph<T extends Comparable<T>> {
         double shortestDistance = MAX_VALUE;
         Vertex<T> shortest = null;
         for (Entry<Vertex<T>, Double> entry : vertexToDistance.entrySet()) {
-            if (entry.getValue() < shortestDistance) {
+            if (entry.getValue() <= shortestDistance) {
                 shortestDistance = entry.getValue();
                 shortest = entry.getKey();
             }
