@@ -45,7 +45,7 @@ public class Vertex<T extends Comparable<T>> {
 
     @Override
     public String toString() {
-        return format("{%s)", value);
+        return format("{%s}", value);
     }
 
     @Override

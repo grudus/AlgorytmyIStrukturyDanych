@@ -57,7 +57,7 @@ public class Edge<T extends Comparable<T>> implements Comparable<Edge<T>> {
     public String toString() {
         return weight == DEFAULT_WEIGHT
                 ? format("%s ----> %s", start, end)
-                : format("%s --%.2f--> %s)", start, weight, end);
+                : format("%s --%.2f--> %s", start, weight, end);
     }
 
     @Override

@@ -1,11 +1,14 @@
 package graph;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static graph.Edge.DEFAULT_WEIGHT;
+import static java.lang.Double.MAX_VALUE;
+import static java.util.AbstractMap.Entry;
+import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
 public class Graph<T extends Comparable<T>> {
@@ -93,6 +96,61 @@ public class Graph<T extends Comparable<T>> {
 
     public void printVertices() {
         vertices.forEach(System.out::println);
+    }
+
+    public void printEdges(T elem) {
+        findEdges(elem).forEach(System.out::println);
+    }
+
+    public List<Edge<T>> findEdges(T value) {
+        return findVertex(value).map(Vertex::getEdges).orElse(emptyList());
+    }
+
+    public double findShortestDistance(T start, T end) {
+        return findShortestDistance(start).get(end);
+    }
+
+    public Map<T, Double> findShortestDistance(T start) {
+        Map<Vertex<T>, Double> vertexToDistance = vertices.stream()
+                .collect(toMap(identity(), v -> v.getValue().equals(start) ? 0 : MAX_VALUE));
+        Map<Vertex<T>, Double> distances = new HashMap<>(vertices.size());
+
+        while (!vertexToDistance.isEmpty()) {
+            Vertex<T> shortest = findShortest(vertexToDistance);
+            double currentWeight = vertexToDistance.get(shortest);
+            vertexToDistance.remove(shortest);
+            distances.put(shortest, currentWeight);
+
+            calculateNeighbours(shortest, currentWeight, vertexToDistance, distances);
+        }
+
+
+        return distances.entrySet().stream()
+                .collect(toMap(e -> e.getKey().getValue(), Entry::getValue));
+    }
+
+    private void calculateNeighbours(Vertex<T> shortest, double weight, Map<Vertex<T>, Double> vertexToDistance, Map<Vertex<T>, Double> distances) {
+        for (Edge<T> edge : shortest.getEdges()) {
+            Vertex<T> neighbour = edge.getEnd();
+            if (vertexToDistance.containsKey(neighbour)) {
+                double neighbourDistance = vertexToDistance.get(neighbour);
+                if (neighbourDistance > weight + edge.getWeight()) {
+                    vertexToDistance.put(neighbour, weight + edge.getWeight());
+                }
+            }
+        }
+    }
+
+    private Vertex<T> findShortest(Map<Vertex<T>, Double> vertexToDistance) {
+        double shortestDistance = MAX_VALUE;
+        Vertex<T> shortest = null;
+        for (Entry<Vertex<T>, Double> entry : vertexToDistance.entrySet()) {
+            if (entry.getValue() < shortestDistance) {
+                shortestDistance = entry.getValue();
+                shortest = entry.getKey();
+            }
+        }
+        return shortest;
     }
 
 
