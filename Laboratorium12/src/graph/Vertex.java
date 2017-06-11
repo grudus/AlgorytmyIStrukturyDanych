@@ -5,40 +5,41 @@ import java.util.List;
 
 import static java.lang.String.format;
 
+@SuppressWarnings("unused")
 public class Vertex<T extends Comparable<T>> {
     private T value;
     private List<Edge<T>> edges;
 
-    public Vertex(T value) {
+    Vertex(T value) {
         this.value = value;
         this.edges = new ArrayList<>();
     }
 
-    public T getValue() {
+    T getValue() {
         return value;
     }
 
-    public void removeEdge(Edge<T> edge) {
+    void removeEdge(Edge<T> edge) {
         edges.remove(edge);
     }
 
-    public void setValue(T value) {
+    void setValue(T value) {
         this.value = value;
     }
 
-    public List<Edge<T>> getEdges() {
+    List<Edge<T>> getEdges() {
         return edges;
     }
 
-    public void setEdges(List<Edge<T>> edges) {
+    void setEdges(List<Edge<T>> edges) {
         this.edges = edges;
     }
 
-    public boolean containsEdge(Edge<T> edge) {
+    boolean containsEdge(Edge<T> edge) {
         return edges.contains(edge);
     }
 
-    public void addEdge(Edge<T> edge) {
+    void addEdge(Edge<T> edge) {
         edges.add(edge);
     }
 

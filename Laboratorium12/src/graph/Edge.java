@@ -2,8 +2,9 @@ package graph;
 
 import static java.lang.String.format;
 
+@SuppressWarnings("unused")
 public class Edge<T extends Comparable<T>> implements Comparable<Edge<T>> {
-    public static final double DEFAULT_WEIGHT = 1.0;
+    static final double DEFAULT_WEIGHT = 1.0;
 
     private Vertex<T> start;
     private Vertex<T> end;
@@ -13,34 +14,34 @@ public class Edge<T extends Comparable<T>> implements Comparable<Edge<T>> {
         this(start, end, DEFAULT_WEIGHT);
     }
 
-    public Edge(Vertex<T> start, Vertex<T> end, double weight) {
+    Edge(Vertex<T> start, Vertex<T> end, double weight) {
         this.start = start;
         this.end = end;
         this.weight = weight;
     }
 
-    public boolean doesLinkOneDirection(T start, T end) {
+    boolean doesLinkOneDirection(T start, T end) {
         return this.start.getValue().equals(start) && this.end.getValue().equals(end);
     }
 
 
-    public boolean doesLink(T start, T end) {
+    boolean doesLink(T start, T end) {
         return doesLinkOneDirection(start, end) || doesLinkOneDirection(end, start);
     }
 
-    public Vertex<T> getStart() {
+    Vertex<T> getStart() {
         return start;
     }
 
-    public void setStart(Vertex<T> start) {
+    void setStart(Vertex<T> start) {
         this.start = start;
     }
 
-    public Vertex<T> getEnd() {
+    Vertex<T> getEnd() {
         return end;
     }
 
-    public void setEnd(Vertex<T> end) {
+    void setEnd(Vertex<T> end) {
         this.end = end;
     }
 

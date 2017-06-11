@@ -7,7 +7,7 @@ import java.util.Set;
 import static graph.Edge.DEFAULT_WEIGHT;
 import static java.util.Comparator.comparing;
 
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
 public class Graph<T extends Comparable<T>> {
     private Set<Vertex<T>> vertices;
     private Set<Edge<T>> edges;
