@@ -23,6 +23,8 @@ public class Lab12 {
 
         graph.printEdges(CITIES[1]);
 
+        System.out.println(graph.findAllAssignableVertex(CITIES[1]));
+
         System.out.println(graph.findShortestDistance(CITIES[1]));
     }
 

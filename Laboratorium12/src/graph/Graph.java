@@ -8,6 +8,7 @@ import static java.util.AbstractMap.Entry;
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 @SuppressWarnings({"unused", "WeakerAccess", "SameParameterValue"})
@@ -108,6 +109,13 @@ public class Graph<T extends Comparable<T>> {
 
     public double findShortestDistance(T start, T end) {
         return findShortestDistance(start).get(end);
+    }
+
+    public List<T> findAllAssignableVertex(T elem) {
+        return findShortestDistance(elem).entrySet().stream()
+                .filter(entry -> entry.getValue() - 10 < MAX_VALUE)
+                .map(Entry::getKey)
+                .collect(toList());
     }
 
     public Map<T, Double> findShortestDistance(T start) {
