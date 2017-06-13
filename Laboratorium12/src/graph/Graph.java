@@ -4,7 +4,7 @@ import java.util.*;
 
 import static graph.Edge.DEFAULT_WEIGHT;
 import static java.lang.Double.MAX_VALUE;
-import static java.util.AbstractMap.Entry;
+import static java.util.Map.Entry;
 import static java.util.Collections.emptyList;
 import static java.util.Comparator.comparing;
 import static java.util.function.Function.identity;
@@ -116,6 +116,25 @@ public class Graph<T extends Comparable<T>> {
                 .filter(entry -> entry.getValue() - 10 < MAX_VALUE)
                 .map(Entry::getKey)
                 .collect(toList());
+    }
+
+    public void  depthFirstTraversal(T firstElement) {
+        Map<Vertex<T>, Boolean> visited = vertices.stream()
+                .collect(toMap(identity(), e -> false));
+
+        depthFirstTraversal(findVertex(firstElement).get(), visited);
+    }
+
+    private void depthFirstTraversal(Vertex<T> elem, Map<Vertex<T>, Boolean> visited) {
+        visited.put(elem, true);
+        System.out.println(elem.getValue());
+
+        for (Edge<T> edge : elem.getEdges()) {
+            Vertex<T> neighbour = edge.getEnd();
+            if (!visited.get(neighbour)) {
+                depthFirstTraversal(neighbour, visited);
+            }
+        }
     }
 
     public Map<T, Double> findShortestDistance(T start) {
